@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organicherbstore</title>
+    <link rel="stylesheet" href="style.css">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2131883770869418');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2131883770869418&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+</head>
+
+<body>
+    <marquee direction="right">"آرڈر کرنے سے پہلے مکمل تفصیل پڑھ لیجیے۔"</marquee>
+
+    <header>
+        <h1><ins> Men,s Gold</ins></h1>
+        <h2><i>Capsul</i></h2>
+    </header>
+    <div class="image-box">
+        <img src="2.png">
+        <img src="3.png">
+
+        <div class="wrapper">
+            <form method="post" action="" name="contactform" id="contactform">
+                <h1>Order Form</h1>
+                <h2>Fill the form with correct details</h2>
+                <p>Price Just 2199/-Free Delivery All Over Pakistan</p>
+                <div class="input-box">
+                    <input type="text" class="form-control" placeholder="Your Name" name="name" id="name" required />
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="tel" onKeyDown="numberonly()" class="form-control" placeholder="Phone Number"  maxlength="13" minlength="10"
+                        name="number" id="phone" required />
+                    <i class='bx bxs-phone'></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" class="form-control" placeholder="Street Address" name="address" id="address"
+                        required />
+                    <i class='bx bx-home'></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" class="form-control" placeholder="City" name="city" id="city" required />
+                    <i class='bx bxs-city'></i>
+                </div>
+
+                <div class="container">
+                    <!-- <a href="popup.html"> -->
+                    <button type="submit" id="submit" class="btn" disabled>Submit</button>
+                    <!-- </a> -->
+                </div>
+                <marquee direction="right">"اس کے علاوہ ہماری کوئی دوسری برانچ نہیں ہے، کسی دوسری جگہ سے آپ اپنی ذمہ
+                    داری پر آرڈر
+                    کریں۔ شکریہ۔"</marquee>
+            </form>
+
+        </div>
+    </div>
+    <div class="loader-box" id="loaderBox">
+        <span class="loader"></span>
+    </div>
+    <!-- <div class="popup">
+            <i class='bx bx-check-circle'></i>
+            <h3>Thank You!</h3>
+            <H4>Your detail has been successfully submitted
+                Our representative will contact you soon.
+            </H4>
+    
+            <div class="container">
+                <button type="Ok" class="button">Ok</button>   
+            </div>
+        </div> -->
+    <script src="Google Sheet.js"></script>
+    <script type="text/javascript">
+        function numberonly() {
+            var e = event || window.event;  // get event object
+            var key = e.keyCode || e.which; // get key cross-browser
+
+            if ((key < 48 || key > 57) && key != 8) { //if it is not a number ascii code
+                //Prevent default action, which is inserting character
+                if (e.preventDefault) e.preventDefault(); //normal browsers
+                e.returnValue = false; //IE
+            }
+        }
+        // Function to check form input and enable submit button
+        document.getElementById("contactform").addEventListener("input", function () {
+            var name = document.getElementById("name").value;
+            var phone = document.getElementById("phone").value;
+            var address = document.getElementById("address").value;
+            var city = document.getElementById("city").value;
+            var submitButton = document.getElementById("submit");
+
+            // Enable submit button if all fields are filled
+            if (name && phone && address && city) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        });
+
+    </script>
+</body>
+
+</html>
