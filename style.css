@@ -1,0 +1,994 @@
+/* General settings for the whole page */
+/* Product section container */
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+/* Image section on the left */
+.images-section {
+    flex: 1;
+    min-width: 300px;
+    margin-right: 30px;
+}
+
+.image-gallery {
+    display: flex;
+    gap: 15px;
+}
+
+.thumbnail-images {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.thumbnail-images img {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.thumbnail-images img:hover {
+    border-color: #007bff;
+}
+
+.main-image-container {
+    width: 100%;
+}
+
+.main-image {
+    width: 100%;
+    max-width: 450px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+.supplement-facts {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.supplement-image {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* =================================
+ * 1. MODERN ORDER FORM MODAL STYLES (HIDDEN)
+ * ================================= */
+
+/* Modal Backdrop - Hiding Logic Corrected */
+.modal {
+    /* 🛑 Zaroori: Form ko chupa kar rakhega */
+    display: none; 
+    
+    position: fixed;
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Display ko flex box se badal kar block kar dein, kyunki hum 'display: none' use kar rahe hain */
+    /* Agar aap display: flex; rakhenge to aapko JS se usko 'flex' karna hoga */
+    /* Lekin aam taur par yeh code behtar kaam karta hai: */
+    
+    /* Overlay background */
+    background-color: rgba(0, 0, 0, 0.75); 
+    overflow-y: auto; /* Scrollable agar content lamba ho */
+    
+    /* Yahan flexbox ki zaroorat nahi, sirf display: none/block kaafi hai. */
+}
+
+/* Modal Content Box - Centered and Modern Look */
+.modal-content {
+    background-color: #ffffff; 
+    /* Centering ke liye purana tareeqa behtar hai jab display: block/none ho */
+    margin: 5% auto; /* 5% from the top and centered horizontally */
+    padding: 30px;
+    width: 95%; 
+    max-width: 450px; 
+    border-radius: 12px; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Soft shadow */
+    position: relative;
+    font-family: 'Arial', sans-serif; 
+}
+
+/* Close Button (X) */
+.close-btn {
+    color: #888;
+    font-size: 32px;
+    font-weight: 300; 
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    cursor: pointer;
+    line-height: 1; 
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #333; 
+}
+
+/* Form Title */
+.form-title {
+    text-align: center;
+    color: #1a1a1a;
+    margin-bottom: 25px;
+    font-size: 1.6em;
+    font-weight: 600;
+    border-bottom: 2px solid #5cb85c; /* Clean Green Accent */
+    padding-bottom: 12px;
+}
+
+/* Input Fields and Textarea Styling */
+/* Aapke purane input selectors ko clean kiya gaya hai */
+#order-form input:not([type="submit"]):not([type="radio"]),
+#order-form textarea {
+    width: 100%;
+    padding: 12px 15px; 
+    background-color: #f7f7f7; 
+    border: 1px solid #e0e0e0; 
+    color: #333;
+    border-radius: 6px; 
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 5px; /* Input aur label ke beech gap */
+}
+
+/* Focus State (Jab user click kare) */
+#order-form input:focus,
+#order-form textarea:focus {
+    border-color: #5cb85c; 
+    box-shadow: 0 0 0 3px rgba(92, 184, 92, 0.25); 
+    background-color: #ffffff; 
+    outline: none;
+}
+
+#order-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Submit Button (CTA) */
+.submit-btn {
+    background-color: #5cb85c; 
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.1em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 20px; /* Thoda zyada margin */
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.1); /* Subtle shadow removed for clean look */
+    transition: background-color 0.3s ease, transform 0.1s;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: #4cae4c; 
+    transform: translateY(-1px); 
+}
+
+.submit-btn:disabled {
+    background-color: #e0e0e0; 
+    color: #999;
+    cursor: not-allowed;
+}
+.submit-btn:active {
+    transform: translateY(0); 
+}
+
+/* =================================
+ * 2. RESPONSIVENESS FOR MODAL (Mobile Fix)
+ * ================================= */
+
+@media (max-width: 600px) {
+    .modal-content {
+        /* Mobile par zyada se zyada width cover karein */
+        width: 95%;
+        height: 60%;
+        padding: 20px; /* Padding kam karein */
+        box-sizing: border-box;
+        /* Modal ko thoda upar rakhein mobile par */
+        margin: 5% auto; 
+    }
+    
+    .form-title {
+        font-size: 1.4em;
+        margin-bottom: 15px;
+    }
+    
+    /* Input fields ki padding aur font-size thodi kam kar sakte hain */
+    #order-form input:not([type="submit"]):not([type="radio"]),
+    #order-form textarea {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+    
+    .submit-btn {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+    
+    .close-btn {
+        font-size: 28px;
+        top: 10px;
+        right: 15px;
+    }
+}
+/* Navigation bar */
+.main-nav-bar {
+    background-color: #fff;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.brand-logo img {
+    height: 50px;
+    padding: 2px;
+}
+
+.brand-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #2c3e50;
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nav-links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #2ecc71;
+}
+
+/* Image Slider */
+.gallery-slider {
+    position: relative;
+    overflow: hidden;
+    padding: 30px 10px;
+    background: #fff;
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+.slider {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.slider::-webkit-scrollbar {
+    display: none;
+}
+
+.slider img {
+    flex: 0 0 auto;
+    width: 250px;
+    margin-right: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Marquee */
+.marquee {
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: linear-gradient(90deg, #f0fffb, #ffffff);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.marquee span {
+    display: inline-block;
+    padding-left: 100%;
+    font-family: "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    color: #064b44;
+    white-space: nowrap;
+    animation: marqueeAnim 20s linear infinite;
+}
+
+@keyframes marqueeAnim {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.marquee:hover span {
+    animation-play-state: paused;
+    cursor: pointer;
+}
+
+/* Footer */
+/* =================================
+ * 1. PREMIUM FOOTER STYLES
+ * ================================= */
+
+/* Footer Base Styling */
+footer {
+    /* Deep Navy Blue/Near Black for a premium look */
+    background-color: #1a2a40; 
+    color: #f0f8ff; /* Off-White for high contrast */
+    padding: 60px 20px; /* Thodi zyada vertical padding */
+    margin-top: 80px;
+    font-family: 'Arial', sans-serif; /* Clean, modern font */
+    line-height: 1.6;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow from below */
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px; /* Thoda zyada wide container */
+    margin: 0 auto;
+    gap: 30px; /* Zyada space between sections */
+}
+
+/* Footer Section Layout */
+.footer-section {
+    flex: 1;
+    min-width: 220px; /* Adjust min-width for better responsiveness */
+    margin-bottom: 25px;
+}
+
+.footer-section h3 {
+    /* Gold accent for headings */
+    color: #ffc107; 
+    font-size: 1.4rem; /* Thoda bada heading */
+    margin-bottom: 20px;
+    font-weight: 700;
+    /* Small underline effect */
+    border-left: 4px solid #ffc107;
+    padding-left: 10px;
+}
+
+.footer-section p {
+    font-size: 0.95rem;
+    color: #a7b7cc; /* Light gray-blue for readability */
+}
+
+/* Social Icons Styling */
+.social-icons {
+    margin-top: 20px;
+}
+
+.social-icons a {
+    display: inline-block;
+    margin-right: 15px;
+    /* Smooth transition for background on hover */
+    transition: all 0.3s ease;
+    border-radius: 50%;
+}
+
+.social-icons img {
+    width: 32px; /* Thoda bada icon */
+    height: 32px;
+    border-radius: 50%;
+    /* Subtle grey border around icons */
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.social-icons img:hover {
+    transform: scale(1.15) rotate(5deg); /* Thoda zyada prominent effect */
+    /* Gold border on hover */
+    border-color: #ffc107; 
+}
+
+/* Footer Bottom (Copyright) */
+.footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 25px;
+    /* Faint separator line */
+    border-top: 1px solid rgba(255, 255, 255, 0.1); 
+}
+
+.footer-bottom p {
+    font-size: 0.85rem;
+    color: #7b8a9d; /* Softer color for copyright text */
+    margin: 0;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .footer-container {
+        /* Stack sections vertically on mobile */
+        flex-direction: column; 
+        gap: 20px;
+    }
+
+    .footer-section {
+        min-width: 100%;
+    }
+}
+/* Navigation bar */
+.main-nav-bar {
+    background-color: #fff;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-logo img {
+    height: 50px;
+}
+
+.brand-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.menu-toggle {
+    display: none; /* Hide toggle on larger screens */
+    font-size: 1.5rem;
+    color: #333;
+    cursor: pointer;
+}
+
+.nav-links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #2ecc71;
+}
+/* --- Default State: Links chhup jaate hain --- */
+@media (max-width: 768px) {
+    /* Menu links default mein chhupe huye honge */
+    .nav-links {
+        display: none;
+        width: 100%;
+        position: absolute;
+        top: 60px; /* Ya jitni aapki nav-bar ki height hai */
+        left: 0;
+        background-color: #f8f8f8; /* Apni pasand ka color de dein */
+        z-index: 1000;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Toggle button sirf mobile par dikhega */
+    .menu-toggle {
+        display: block; 
+        text-decoration: none;
+        color: #333;
+        font-size: 1.5rem;
+    }
+
+    /* --- Active State: Links nazar aayenge --- */
+    .nav-links.active {
+        display: flex; /* Links ko dikha dein */
+        flex-direction: column;
+    }
+
+    .nav-links ul {
+        flex-direction: column;
+        width: 100%;
+        padding: 0;
+    }
+
+    .nav-links li {
+        text-align: center;
+        margin: 10px 0;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+}
+
+/* --- Success Modal Styles --- */
+.modal-success-hidden {
+    display: none; /* Default mein chupa hua rahega */
+    position: fixed; 
+    z-index: 1001; /* Review form modal se bhi oopar (higher z-index) */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7); 
+    backdrop-filter: blur(4px);
+}
+
+.modal-success-content {
+    background: #ffffff;
+    margin: 15% auto;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 350px;
+    width: 80%;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+.modal-success-content h2 {
+    color: #2ecc71; /* Green color for success */
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.modal-success-content p {
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.ok-btn {
+    background-color: #007bff; /* Blue or any color */
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.ok-btn:hover {
+    background-color: #0056b3;
+}
+
+/* =========================================================
+ * UPDATED: FULL-WIDTH OFFER BAR (Marquee ke Neeche)
+ * ========================================================= */
+
+.offer-section-container {
+    /* Poori screen ki chaurai */
+    width: 100%;
+    /* Background color ko dark ya high-contrast rakhein */
+    background-color: #2c3e50; 
+    padding: 15px 0; /* Padding kam kiya */
+    margin: 0; /* Margin hata diya taake poori chaurai le */
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.offer-timer-box {
+    /* Box-shadow aur margin hata diya taake yeh poori patti ka hissa lage */
+    background: none; 
+    padding: 0 20px;
+    margin: 0 auto;
+    max-width: 1200px; /* Content center mein rahega */
+}
+
+/* --- Countdown Timer Styling (Same as before, but with adjustments) --- */
+.offer-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #f1c40f; /* Yellow title */
+}
+
+.countdown-timer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.timer-unit {
+    /* Background ko zyada urgent banane ke liye */
+    background: #e74c3c; 
+    padding: 5px 10px;
+    border-radius: 6px;
+    text-align: center;
+    min-width: 65px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.timer-value {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.timer-label {
+    font-size: 0.7rem;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+/* Timer Units ke andar ke Stock Message ko adjust karna */
+/* Is style se aapka 'Limited Stock' ka text timer unit ke barabar dikhega */
+
+.offer-section-container .timer-unit {
+    /* Timer units ke liye pehle se maujood styles */
+    background: #e74c3c;
+    padding: 5px 10px;
+    border-radius: 6px;
+    text-align: center;
+    min-width: 65px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.offer-section-container .timer-unit #Text {
+    /* Jab 'Limited Stock' text timer unit ke andar ho */
+    font-size: 1.1rem; /* Font size ko adjust kiya */
+    font-weight: 700;
+    line-height: 1.2; /* Line height adjust kiya taake center mein aaye */
+    display: block; /* Poori chaurai lega */
+    color: #fff;
+    padding: 5px 0; /* Andar se thoda space diya */
+}
+/* --- General Reset & Base Styles --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: beige;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden; /* No horizontal scroll */
+}
+
+/* --- Navigation Bar --- */
+.main-nav-bar {
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.brand-logo { display: flex; align-items: center; gap: 10px; }
+.brand-logo img { height: 50px; }
+.brand-title { font-size: 1.5rem; font-weight: 700; color: #2c3e50; }
+.nav-links ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; }
+.nav-links a { text-decoration: none; color: #555; font-size: 1rem; font-weight: 600; transition: color 0.3s; }
+.nav-links a:hover { color: #2ecc71; }
+.menu-toggle { display: none; font-size: 1.5rem; color: #333; cursor: pointer; }
+
+/* --- Marquee --- */
+.marquee {
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: linear-gradient(90deg, #f0fffb, #ffffff);
+    padding: 10px 0;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
+}
+.marquee span {
+    display: inline-block;
+    padding-left: 100%;
+    font-size: 18px;
+    font-weight: 700;
+    color: #064b44;
+    white-space: nowrap;
+    animation: marqueeAnim 20s linear infinite;
+}
+@keyframes marqueeAnim { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+/* --- Other Sections (Product Container, Tabs, Footer, Modal) CSS remains the same... --- */
+/* (Skipping the rest of your provided CSS for brevity, assuming it's correctly placed in your style.css) */
+/* ... */
+
+/* ==================================
+ * 2. MEDIA QUERIES (RESPONSIVENESS) 📱💻
+ * ================================== */
+@media (max-width: 768px) {
+    
+    /* --- Navigation --- */
+    .main-nav-bar { padding: 0.8rem 1rem; }
+    .nav-links { display: none; } 
+    .menu-toggle { display: block; }
+    
+    /* --- Product Container (Hero) --- */
+    .product-container {
+        padding: 15px;
+        margin: 10px auto;
+        border-radius: 0;
+    }
+    .images-section { margin-right: 0; }
+    .image-gallery { flex-direction: column-reverse; gap: 10px; } /* Thumbnails neeche aayengi */
+    .thumbnail-images { flex-direction: row; justify-content: center; }
+
+    .slider img { width: 180px; }
+    .footer-container { flex-direction: column; text-align: center; }
+    .footer-section { min-width: 100%; }
+}
+/* =========================================================
+ * NEW STYLE: Ticker Bar Timer (Image Type)
+ * ========================================================= */
+
+.ticker-offer-bar {
+    /* Poori patti (bar) ka style */
+    width: 100%;
+    background-color: #000; /* Black Background */
+    color: #fff;
+    padding: 12px 0;
+    margin: 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.ticker-content-wrapper {
+    /* Content ko center mein laane aur alignment ke liye */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap; /* Taa-ke sab ek line mein rahe */
+    max-width: 1200px;
+    width: 95%;
+}
+
+.ticker-text-left, 
+.ticker-text-right {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0 5px;
+    white-space: nowrap; /* Zaroori hai taake text wrap na ho */
+}
+
+/* Timer Unit ke liye Style */
+.ticker-timer-unit {
+    display: inline-flex; /* Timer parts ko ek line mein rakhta hai */
+    align-items: baseline;
+    font-weight: 700;
+    color: #f1c40f; /* Yellow Color */
+    margin: 0 5px;
+}
+
+.ticker-timer-value {
+    font-size: 1.2rem; /* Value thodi badi */
+    margin-right: 2px;
+}
+
+.ticker-timer-label {
+    font-size: 0.75rem; /* Label chota */
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+/* ==================================
+ * MEDIA QUERIES (MOBILE FIXES) 📱
+ * ================================== */
+@media (max-width: 768px) {
+    .ticker-offer-bar {
+        padding: 8px 0;
+    }
+    
+    .ticker-content-wrapper {
+        flex-wrap: wrap; /* Agar screen bahut choti ho to wrap hone ki ijazat */
+    }
+
+    .ticker-text-left, 
+    .ticker-text-right {
+        font-size: 0.85rem; /* Mobile par font size chota kiya */
+    }
+
+    .ticker-timer-unit {
+        margin: 0 3px;
+    }
+    
+    .ticker-timer-value {
+        font-size: 1rem; /* Values ko aur chota kiya */
+    }
+    
+    .ticker-timer-label {
+        font-size: 0.6rem;
+    }
+    
+    /* Jab content wrap ho to center align ho jaye */
+    .ticker-text-left {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    
+    .ticker-text-right {
+        /* Yeh "Hurry Up" wala hissa timer ke neeche aa sakta hai */
+        width: 100%;
+        text-align: center;
+        margin-top: 5px;
+    }
+    .product-description{
+        font-size: 1rem;
+    }
+}
+
+
+/* CSS for Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f8f8;
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid #eee; /* Separator line */
+            margin-bottom: 1px;
+        }
+
+        .accordion-header {
+            background-color: #fff;
+            color: #333;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .accordion-header:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Styling for the first header (Description) to be orange/highlighted */
+        .accordion-item:first-child .accordion-header-text {
+            color: #333; /* Orange color for Description */
+        }
+
+        .accordion-icon {
+            font-size: 24px;
+            font-weight: 300;
+            line-height: 1;
+            padding: 0 10px;
+            background-color: #333; /* Dark background for the icon area */
+            color: white; /* White '+' sign */
+            height: 40px;
+            width: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            transition: transform 0.3s;
+        }
+        
+        /* Rotate the '+' sign to 'x' or '-' when the content is shown */
+        .accordion-header.active .accordion-icon {
+            transform: rotate(45deg);
+        }
+
+        .accordion-content {
+            padding: 0 20px;
+            background-color: #fff;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out; /* Smooth transition for opening/closing */
+            text-align: right;
+            direction: rtl;
+        }
+
+        .accordion-content p {
+            padding: 10px 0 20px 0;
+            margin: 0;
+            color: #555;
+        }
+
+/* CSS for Reviews Section Styling */
+    /* ------------------------------------ */
+    .reviews-container {
+        font-family: Arial, sans-serif;
+        max-width: 650px;
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    /* ------------------------------------ */
+    /* CSS for Reviews Section Styling */
+    /* ------------------------------------ */
+    .reviews-container {
+        font-family: Arial, sans-serif;
+        max-width: 650px;
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+    .add-review-btn-section { margin-bottom: 25px; }
+    .add-review-btn {
+        background-color: #333; color: white; border: none; padding: 12px 20px;
+        border-radius: 4px; font-size: 16px; cursor: pointer; display: inline-flex;
+        align-items: center; transition: background-color 0.2s;
+    }
+    .add-review-btn:hover { background-color: #555; }
+    .add-review-btn svg { margin-right: 8px; width: 16px; height: 16px; }
+    .review-card {
+        background-color: #fff; border: 1px solid #eee; border-radius: 8px;
+        padding: 15px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .review-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .reviewer-info { display: flex; align-items: center; }
+    .avatar {
+        width: 40px; height: 40px; border-radius: 50%; background-color: #333;
+        color: white; display: flex; justify-content: center; align-items: center;
+        font-size: 18px; font-weight: bold; margin-right: 10px;
+    }
+    .reviewer-name { font-weight: bold; color: #333; }
+    .review-rating-date { text-align: right; }
+    .review-rating { color: #333; font-size: 16px; margin-bottom: 3px; display: block; }
+    .review-date { font-size: 12px; color: #777; }
+    .review-title { font-weight: bold; margin-bottom: 8px; font-size: 16px; }
+    .review-body { font-size: 14px; color: #555; line-height: 1.6; }

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Vibes</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '28496094760057490');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=28496094760057490&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+ <meta name="facebook-domain-verification" content="4etrd96t2jrwtdts70dd9bwc76aa7k" /> 
+</head>
+    <style>
+    /* ... (Other CSS remains the same) ... */
+
+    /* ------------------------------------ */
+    /* Updated CSS for Review Form and Overlay */
+    /* ------------------------------------ */
+    .review-form-overlay {
+        /* Overlay to cover the whole screen */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: none;
+        margin-top: 52px;
+        
+        /* ✨ FIX 1: Use center alignment for both axes */
+        justify-content: center;
+        align-items: center; 
+        
+        z-index: 1000;
+        /* Scrollable container for small screens */
+        overflow-y: auto; 
+    }
+
+    .review-form-content {
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        max-width: 450px;
+        width: 90%; 
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        position: relative;
+        
+        /* ✨ FIX 2: Remove unnecessary vertical margin which was causing header overlap */
+        margin: 20px; 
+    }
+    
+    /* ... (Rest of the CSS remains the same, including the media query) ... */
+
+    .review-form-content h3 {
+        margin-top: 0;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .form-group input, .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; 
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+    
+    /* Star Rating Styling - LEFT-TO-RIGHT HIGHLY RECOMMENDED FIX */
+.star-rating input {
+    display: none; /* Hides the actual radio buttons */
+}
+
+.star-rating {
+    /* 1. HTML order ulta karne ke bawajood, stars seedhe dikhenge */
+    direction: rtl; 
+    display: inline-block;
+    font-size: 0; /* Important: removes space */
+}
+
+.star-rating label {
+    font-size: 24px;
+    color: #ddd; /* Light color for unselected stars */
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0 2px;
+    display: inline-block;
+    /* 2. Label ki direction seedhi (LTR) rakhte hain */
+    direction: ltr; 
+    font-size: 24px;
+}
+
+/* 3. Logic: ~ (tilde) selector RTL mein 'sare pichle' elements select karta hai, 
+      lekin LTR mein 'sare agle' elements select karta hai. 
+      RTL set karne se woh 'left' wale stars ko select karega. */
+
+/* When hovering (hovered star and all stars to its left will light up) */
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffc107;
+}
+
+/* When checked (checked star and all stars to its left will stay gold) */
+.star-rating input:checked ~ label,
+.star-rating input:checked + label {
+    color: #ffc107;
+}
+
+    .submit-btn {
+        background-color: #ff9800;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.2s;
+        width: 100%; /* Make submit button full width on small screens */
+    }
+
+    .submit-btn:hover {
+        background-color: #e68900;
+    }
+    
+    /* ------------------------------------ */
+    /* Media Query for smaller screens (e.g., phones) */
+    /* ------------------------------------ */
+    @media (max-width: 500px) {
+        .review-form-content {
+            /* Reduce padding and margin for very small screens */
+            padding: 20px;
+            margin: 20px 0; 
+        }
+    }
+</style>
+
+<div id="review-form-modal" class="review-form-overlay">
+    <div class="review-form-content">
+        <h3>Write a Review</h3>
+        <form id="customer-review-form" target="_self" method="POST" 
+    action="YOUR_GOOGLE_FORM_EMBED_URL" 
+    onsubmit="setTimeout(function(){closeReviewForm();}, 1000);">
+            <div class="form-group"><label for="reviewer-name">Your Name</label><input type="text" id="reviewer-name" required></div>
+            <div class="form-group">
+    <label>Overall Rating</label>
+    <div class="star-rating">
+        <input type="radio" id="star5" name="rating" value="5" required><label for="star5" title="5 stars">★</label>
+        <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars">★</label>
+        <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars">★</label>
+        <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars">★</label>
+        <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 star">★</label>
+    </div>
+</div>
+            <div class="form-group"><label for="review-title">Review Title</label><input type="text" id="review-title" required></div>
+            <div class="form-group"><label for="review-text">Your Detailed Review</label><textarea id="review-text" required></textarea></div>
+            <button type="submit" class="submit-btn">Submit Review</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Show the modal when 'Add a review' is clicked
+    function openReviewForm() {
+        document.getElementById('review-form-modal').style.display = 'flex';
+    }
+    function closeReviewForm() {
+        document.getElementById('review-form-modal').style.display = 'none';
+        document.getElementById('customer-review-form').reset();
+        alert('Thank you! Your review has been submitted to our system.');
+    }
+
+    // Hide the modal when clicking outside of it
+    document.getElementById('review-form-modal').addEventListener('click', function(e) {
+        if (e.target.id === 'review-form-modal') {
+            document.getElementById('review-form-modal').style.display = 'none';
+        }
+    });
+
+    // Handle form submission (Requires Backend for actual saving)
+    document.getElementById('customer-review-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        
+        // Close form and reset fields
+        document.getElementById('review-form-modal').style.display = 'none';
+        document.getElementById('customer-review-form').reset();
+    });
+</script>
+<body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
+    <nav class="main-nav-bar">
+        <div class="brand-logo">
+            <a href="#home">
+                <img src="logo (1).jpeg" alt="Organic Herb Store Logo" />
+            </a>
+            <div class="brand-title">Green Vibes</div>
+        </div>
+
+        <a href="#" class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </a>
+
+        <div class="nav-links" id="navLinks">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#description-tab">Benefits</a></li>
+                <li><a href="#product">Product</a></li>
+                <li><a href="#Reviews">Review</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="marquee">
+        <span>Mens Gold Capsules – Herbal Stamina Capsuls! ⚡ Take 1 Capsule 1 Hour Before Special Moment |
+            Safe & Side Effect Free!</span>
+    </div>
+    <div class="ticker-offer-bar">
+    <div class="ticker-content-wrapper">
+        <span class="ticker-text-left">Today only: Save flat 30% | Offer Ends in </span>
+        
+        <span class="ticker-timer-unit">
+            <span id="days" class="ticker-timer-value">02</span>
+            <span class="ticker-timer-label">Days</span>
+        </span>
+        
+        <span class="ticker-timer-unit">
+            <span id="hours" class="ticker-timer-value">07</span>
+            <span class="ticker-timer-label">HRS</span>
+        </span>
+        
+        <span class="ticker-timer-unit">
+            <span id="minutes" class="ticker-timer-value">47</span>
+            <span class="ticker-timer-label">MINS</span>
+        </span>
+        
+        <span class="ticker-timer-unit">
+            <span id="seconds" class="ticker-timer-value">26</span>
+            <span class="ticker-timer-label">SECS</span>
+        </span>
+
+        <span class="ticker-text-right"> Hurry Up! →</span>
+    </div>
+</div>
+    <div id="product" class="product-container">
+        <div class="images-section">
+            <div class="image-gallery">
+                <div class="thumbnail-images">
+                    <img src="1.png" alt="Thumbnail 1">
+                    <img src="2.jpeg" alt="Thumbnail 1"> 
+                    <img src="3.jpg" alt="Thumbnail 1">     
+                </div>
+                <div class="main-image-container">
+                    <img src="1.png" alt="Main Product Image" class="main-image">
+                </div>
+            </div>
+        </div>
+        <div class="product-details" style="font-family: Arial, sans-serif; max-width: 400px;">
+    <h1 class="product-title" style="font-size: 24px; font-weight: normal; line-height: 1.3;">Mens Gold/Herbal Capsules</h1>
+    
+    <div class="reviews-section" style="margin-bottom: 15px;">
+        <span style="color: #FFC700; font-size: 20px;">★★★★★</span> 
+        <span style="font-size: 14px; color: #555;">(4.8) 1629 Reviews</span>
+    </div>
+    
+    <div class="price-section" style="margin-bottom: 25px;">
+        <span class="original-price" style="font-size: 22px; color: #333;">Rs. <del>2,999</del></span>
+        <span class="discount-price" style="font-size: 26px; color: #CC0000; font-weight: bold; margin-left: 10px;">Rs. 2199/=</span>
+    </div>
+    
+    <p class="section-heading" style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Benefits:</p>
+
+    <ul class="benefits-list" style="list-style-type: disc; padding-left: 20px; margin: 0;">
+        <li style="margin-bottom: 8px;">**Better Timing**</li>
+        <li style="margin-bottom: 8px;">**Happy Wife Happy Life**</li>
+        <li style="margin-bottom: 8px;">**Wife ki bus Hojaygi**</li>
+    </ul>
+
+    <p class="product-description" dir="rtl" style="margin-top: 25px; font-size: 16px;">
+        آرڈر کے لیے (Order Now) کے بٹن پر کلک کریں اور اپنا مکمل پتہ درج کریں۔
+    </p>
+
+    <button class="buy-now-btn" id="open-form-btn" style="background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 18px; display: block; width: 100%; margin-top: 20px;">
+        ORDER NOW
+    </button>
+</div>
+<div class="accordion">
+        
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="accordion-header-text">Product Information</span>
+                <div class="accordion-icon">+</div>
+            </div>
+            <div class="accordion-content">
+    <ul>
+        <li>
+            <strong>💪 کارکردگی اور توانائی میں معاون (SUPPORTS PERFORMANCE & VITALITY):</strong> 
+            <p>(Mens Gold) توانائی کی سطح کو سہارا دیتا ہے اور جسمانی طاقت (vitality) کو بڑھانے میں مدد کرتا ہے۔ صحت مند خون کے بہاؤ کو فروغ دینے کے علاوہ، یہ ان لوگوں کے لیے بہترین ہے جو اپنی فعال طرز زندگی اور کارکردگی کو بہتر بنانا چاہتے ہیں۔</p>
+        </li>
+        <li>
+            <strong>👨‍⚕️ مردانہ صحت میں مددگار (MALE HEALTH SUPPORT):</strong> 
+            <p> آپ کی توانائی، طاقت اور سٹیمنا کو بڑھانے میں مدد کرے گا، کیونکہ اس کے اجزاء (ingredients) آپ کی حیات بخشی (vitality) کو دوبارہ جوان اور بحال کرنے کا کام کرتے ہیں۔</p>
+        </li>
+        <li>
+            <strong>✨ اعتماد اور طاقت میں اضافہ (BOOST CONFIDENCE & STRENGTH):</strong>
+            <p>بہتر اور مضبوط گردش (circulation) کے ساتھ، یہ آپ کے موڈ کو بہتر بنائے گا اور آپ کو سونے کے کمرے کے اندر اور باہر، دونوں جگہ بہتر کارکردگی دکھانے اور بااختیار محسوس کرنے کا اعتماد دے گا۔</p>
+        </li>
+    </ul>
+</div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="accordion-header-text">Instructions</span>
+                <div class="accordion-icon">+</div>
+            </div>
+            <div class="accordion-content">
+                <h3>💊 استعمال کا طریقہ</h3>
+                <p>بھرے پیٹ پر لیں: اسے خالی پیٹ نہ استعمال کریں۔</p>
+            <p>روزانہ کی خوراک سے تجاوز نہ کریں: ضرورت کے مطابق صرف (1) کیپسول
+ لیں۔</p>
+            <p>وقت کا خیال رکھیں: ہمبستری سے ایک گھنٹہ پہلے استعمال کرنا صحیح وقت ہے۔</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="accordion-header-text">Ingredients</span>
+                <div class="accordion-icon">+</div>
+            </div>
+            <div class="accordion-content">
+                <h3>"اجزاء"</h3>
+                <p>بادام، زنجبیل، لونگ، دارچینی، جنسینگ کا عرق، اردھ کھجور، سنگھاڑا، زعفران، جوہر خاص کا عرق، کشتہ نقرہ، کشتہ مروارید، کشتہ قلعی۔</p>
+            </div>
+        
+        </div>
+
+    </div>
+    <div style="font-family: Arial, sans-serif; max-width: 400px; padding: 20px; border: 1px solid #eee; border-radius: 8px; background-color: #fff;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center;">
+            <span style="font-size: 48px; font-weight: bold; margin-right: 10px;">4.8</span>
+            <span style="color: #333; font-size: 24px;">★★★★★</span>
+        </div>
+        <div style="text-align: right;">
+            <span style="font-size: 24px; font-weight: normal; display: block; line-height: 1.2;">1629</span>
+            <span style="font-size: 14px; color: #777;">Total Reviews</span>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        
+        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+            <span style="width: 10px; font-size: 14px; color: #333;">5</span>
+            <div style="flex-grow: 1; height: 10px; background-color: #f0f0f0; margin: 0 10px; border-radius: 5px; position: relative;">
+                <div style="height: 100%; width: 78.9%; background-color: #000; border-radius: 5px;"></div>
+            </div>
+            <span style="font-size: 14px; color: #333;">1286</span>
+        </div>
+
+        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+            <span style="width: 10px; font-size: 14px; color: #333;">4</span>
+            <div style="flex-grow: 1; height: 10px; background-color: #f0f0f0; margin: 0 10px; border-radius: 5px; position: relative;">
+                <div style="height: 100%; width: 20.4%; background-color: #000; border-radius: 5px;"></div>
+            </div>
+            <span style="font-size: 14px; color: #333;">332</span>
+        </div>
+
+        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+            <span style="width: 10px; font-size: 14px; color: #333;">3</span>
+            <div style="flex-grow: 1; height: 10px; background-color: #f0f0f0; margin: 0 10px; border-radius: 5px; position: relative;">
+                <div style="height: 100%; width: 0.67%; background-color: #000; border-radius: 5px;"></div>
+            </div>
+            <span style="font-size: 14px; color: #333;">11</span>
+        </div>
+
+        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+            <span style="width: 10px; font-size: 14px; color: #333;">2</span>
+            <div style="flex-grow: 1; height: 10px; background-color: #f0f0f0; margin: 0 10px; border-radius: 5px; position: relative;">
+                <div style="height: 100%; width: 0%; background-color: #000; border-radius: 5px;"></div>
+            </div>
+            <span style="font-size: 14px; color: #333;">0</span>
+        </div>
+
+        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+            <span style="width: 10px; font-size: 14px; color: #333;">1</span>
+            <div style="flex-grow: 1; height: 10px; background-color: #f0f0f0; margin: 0 10px; border-radius: 5px; position: relative;">
+                <div style="height: 100%; width: 0%; background-color: #000; border-radius: 5px;"></div>
+            </div>
+            <span style="font-size: 14px; color: #333;">0</span>
+        </div>
+
+    </div>
+
+    <div style="font-size: 16px; font-weight: bold; margin-top: 25px;">
+        100% would recommend this product
+    </div>
+</div>
+
+<div id="Reviews"class="reviews-container">
+
+    <div class="add-review-btn-section">
+        <button class="add-review-btn" onclick="openReviewForm()">
+    Add a review
+</button>
+    </div>
+
+    <div class="review-card">
+    <div class="review-header">
+        <div class="reviewer-info">
+            <div class="avatar" style="background-color: #00008B;">A</div>
+            <span class="reviewer-name">احمد خان</span>
+        </div>
+        <div class="review-rating-date">
+            <span class="review-rating">★★★★★</span>
+            <span class="review-date">10/25/2025</span>
+        </div>
+    </div>
+    <p class="review-title">ٹائمنگ کا بہترین حل! 💖</p>
+    <p class="review-body">
+        میں نے یہ کیپسول استعمال کیے اور مجھے حیرت ہوئی۔ ٹائمنگ میں بہت زیادہ اضافہ ہوا ہے۔ ایک کیپسول کافی ہوتا ہے اور سختی بھی کمال کی ہے۔ یہ واقعی ایک پاور بوسٹر ہے۔ میں سب کو یہی تجویز کروں گا۔
+    </p>
+</div>
+
+<div class="review-card">
+    <div class="review-header">
+        <div class="reviewer-info">
+            <div class="avatar" style="background-color: #6A5ACD;">R</div>
+            <span class="reviewer-name">Rauf Malik</span>
+        </div>
+        <div class="review-rating-date">
+            <span class="review-rating">★★★★★</span>
+            <span class="review-date">09/20/2025</span>
+        </div>
+    </div>
+    <p class="review-title">Best Decision Ever! 💯</p>
+    <p class="review-body">
+        Bohot hi acha experience raha. Sirf aik capsule, ek ghanta pehle, aur aap ready hain. Timing aur sakhti dono mein zabardast improvement. Yeh herbal capsules waqai asar karti hain. Paisa wasool product hai.
+    </p>
+</div>
+
+<div class="review-card">
+    <div class="review-header">
+        <div class="reviewer-info">
+            <div class="avatar" style="background-color: #FF1493;">I</div>
+            <span class="reviewer-name">Imran Sheikh</span>
+        </div>
+        <div class="review-rating-date">
+            <span class="review-rating">★★★★★</span>
+            <span class="review-date">09/24/2025</span>
+        </div>
+    </div>
+    <p class="review-title">Confidence Level Max! 🔥</p>
+    <p class="review-body">
+        Mujhe ab koi sharmindgi nahi hoti. In capsules ne meri performance ko top level par le aane mein madad ki hai. Timing aur energy dono perfect hain. Agar power boost chahiye toh yeh best choice hai.
+    </p>
+</div>
+
+<div class="review-card">
+    <div class="review-header">
+        <div class="reviewer-info">
+            <div class="avatar" style="background-color: #8B0000;">Z</div>
+            <span class="reviewer-name">زاہد مغل</span>
+        </div>
+        <div class="review-rating-date">
+            <span class="review-rating">★★★★★</span>
+            <span class="review-date">10/22/2025</span>
+        </div>
+    </div>
+    <p class="review-title">میری ازدواجی زندگی بدل گئی! 💪</p>
+    <p class="review-body">
+        میں ان کیپسول سے بہت خوش ہوں۔ ایک گھنٹہ پہلے لینے پر بہترین اثر دکھاتے ہیں۔ اب میں زیادہ پُراعتماد محسوس کرتا ہوں۔ کمال کی سختی اور دیرپا اثر۔
+    </p>
+</div>
+
+<div class="review-card">
+    <div class="review-header">
+        <div class="reviewer-info">
+            <div class="avatar" style="background-color: #2E8B57;">K</div>
+            <span class="reviewer-name">کاشف علی</span>
+        </div>
+        <div class="review-rating-date">
+            <span class="review-rating">★★★★★</span>
+            <span class="review-date">10/18/2025</span>
+        </div>
+    </div>
+    <p class="review-title">فوری اور مؤثر نتیجہ! 🚀</p>
+    <p class="review-body">
+        میں نے بہت سی چیزیں آزمائیں، لیکن ان کیپسول جیسا فوری اور واضح نتیجہ کسی کا نہیں ملا۔ بھرے پیٹ پر ایک کیپسول لیں اور اپنا اعتماد بحال کریں۔
+    </p>
+</div>
+
+            <div id="order-form-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <h2 class="form-title">Place Order — Mens Gold Capsules
+</h2>
+                    <form id="order-form"
+                        action="https://script.google.com/macros/s/AKfycbz_CCx8tuqCZ2wFhdy_fB6rpBTJWVYV3DOzeEsFChx7qiYa4I_3-H_BC4xLopwN_30/exec"
+                        method="POST">
+                        <input type="text" name="name" placeholder="Full Name" required>
+                        <input type="tel" name="phone" placeholder="Phone Number" required>
+                        <input type="City" name="City" placeholder="City">
+                        <textarea name="address" placeholder="Shipping Address" rows="3" required></textarea>
+                        <input type="hidden" name="product" value="MG">
+                        <input type="hidden" name="price" value="2499">
+                        <button type="submit" class="submit-btn" id="submit-btn">Place Order</button>
+                    </form>
+                </div>
+            </div>
+            <footer>
+                <div class="footer-container">
+                    <div class="footer-section about-us">
+                        <h3>About Us</h3>
+                        <p>We are dedicated to providing the highest quality health supplements to enhance men's
+                            wellness and vitality. Our products are made with natural ingredients to ensure a healthy
+                            and active lifestyle.</p>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2026 Green Vibes Reserved.</p>
+                    </div>
+            </footer>
+            <script>
+    // 1. Buttons aur Links ko select karen
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    // 2. Button par 'click' event listener lagayein
+    menuToggle.addEventListener('click', () => {
+        // 3. nav-links par 'active' class add/remove karein
+        navLinks.classList.toggle('active');
+        
+        // Optional: Toggle the bar icon (fas fa-bars) to a close icon (fas fa-times)
+        const icon = menuToggle.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+    });
+</script>
+            <script>
+                document.getElementById('order-form').addEventListener('submit', function (event) {
+                    const form = event.target;
+                    const submitBtn = form.querySelector('.submit-btn');
+
+                    // Show processing message and disable the button
+                    submitBtn.textContent = 'Processing...';
+                    submitBtn.disabled = true;
+
+                    var data = new FormData(form);
+
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: data
+                    })
+                });
+            </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const form = document.getElementById('order-form');
+                    const submitBtn = document.getElementById('submit-btn');
+                    submitBtn.disabled = true;
+
+                    form.addEventListener('input', () => {
+                        submitBtn.disabled = !form.checkValidity();
+                    });
+
+                    form.addEventListener('submit', function (e) {
+                        e.preventDefault();  // stop default Google message
+                        window.location.href = "thankyou.html"; // direct redirect
+                    });
+                });
+            </script>     
+            <script>
+    function startCountdown() {
+        // Set the countdown time (2 hours from now)
+        const countdownDate = new Date().getTime() + (2 * 60 * 60 * 1000); 
+
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            // Time calculations for hours, minutes and seconds
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Output the result in elements
+            document.getElementById("hours").innerHTML = String(hours).padStart(2, '0');
+            document.getElementById("minutes").innerHTML = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").innerHTML = String(seconds).padStart(2, '0');
+
+            // If the countdown is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdownTimer").innerHTML = "TIME IS UP!";
+                document.querySelector('.stock-message').innerHTML = "Offer Expired!";
+            }
+        }, 1000);
+    }
+
+    // Start the countdown when the page loads
+    startCountdown();
+</script>   
+
+<script>
+        function toggleAccordion(header) {
+            // Toggle the 'active' class on the header
+            header.classList.toggle('active');
+            
+            // Get the content panel (the next sibling element)
+            const content = header.nextElementSibling;
+
+            // Check if the content is currently visible
+            if (content.style.maxHeight) {
+                // If max-height is set (content is open), close it
+                content.style.maxHeight = null;
+            } else {
+                // If max-height is not set (content is closed), open it
+                // Set max-height to the actual scroll height for the smooth transition
+                content.style.maxHeight = content.scrollHeight + "px";
+            } 
+        }
+    </script>
+            <script src="script.js"></script>
+</body>
+
+</html>
